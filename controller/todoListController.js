@@ -55,7 +55,14 @@ exports.getTodoLists = async (req, res) => {
 
   const params = {
     TableName: process.env.aws_todo_lists_table_name,
-    Key: { uid: UID },
+    FilterExpression: '#uid = :v_uid',
+    ExpressionAttributeNames: {
+      '#uid': 'uid',
+    },
+    ExpressionAttributeValues: {
+      ':v_uid': UID,
+    },
+    TableName: aws_table,
   };
   try {
     const data = await docClient.send(new ScanCommand(params));
